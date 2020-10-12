@@ -33,7 +33,7 @@ export default function TakersScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            {takers && takers.length == 0 && <Text>No takers found</Text>}
+            {takers && takers.length == 0 && !isLoading && <Text style={styles.noneFound}>No takers found</Text>}
             {takers && takers.length > 0 && (
                 <FlatList
                     data={takers}
@@ -70,6 +70,13 @@ const getStyles = (state) => StyleSheet.create({
         flex: 1,
         backgroundColor: state.theme.colors.backgroundColor,
         position: 'relative',
+    },
+    noneFound: {
+        color: state.theme.colors.faded,
+        fontSize: 28,
+        letterSpacing: 2,
+        textAlign: "center",
+        marginTop: "20%",
     },
     error: {
         color: '#ee2233',

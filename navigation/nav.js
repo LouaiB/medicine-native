@@ -12,6 +12,7 @@ import TakersScreen from '../screens/TakersScreen';
 import TakerScreen from '../screens/TakerScreen';
 import AddTakerScreen from '../screens/AddTakerScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import EditTakerScreen from '../screens/EditTakerScreen';
 
 // Navigators
 const Tab = createBottomTabNavigator();
@@ -67,6 +68,7 @@ const TakersStack = () => {
       <Stack.Screen name="Takers" component={TakersScreen} options={{title: "Takers", headerStyle: stackHeaderStyle, headerTitleStyle: stackHeaderTitleStyle}} />
       <Stack.Screen name="Taker" component={TakerScreen} options={{title: "Taker", headerStyle: stackHeaderStyle, headerTitleStyle: stackHeaderTitleStyle}} />
       <Stack.Screen name="Add Taker" component={AddTakerScreen} options={{title: "Add Taker", headerStyle: stackHeaderStyle, headerTitleStyle: stackHeaderTitleStyle}} />
+      <Stack.Screen name="Edit Taker" component={EditTakerScreen} options={{title: "Edit Taker", headerStyle: stackHeaderStyle, headerTitleStyle: stackHeaderTitleStyle}} />
     </Stack.Navigator>
   )
 }

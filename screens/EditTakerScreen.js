@@ -4,14 +4,22 @@ import { DbService } from '../services/db.service';
 import Toast from 'react-native-simple-toast';
 import { ThemeContext } from '../contexts/theme.context';
 
-export default function AddTakerScreen() {
+export default function EditTakerScreen({ route }) {
 
     const { state } = useContext(ThemeContext);
     const styles = getStyles(state);
 
+    const [taker, setTaker] = useState(route.params.taker);
     const [name, setName] = useState('');
     const [age, setAge] = useState();
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        if(taker) {
+            setName(taker.name);
+            setAge(taker.age);
+        }
+    }, [taker]);
 
     const validate = () => {
         setError('');
@@ -44,18 +52,18 @@ export default function AddTakerScreen() {
         setAge('');
     }
 
-    const addTaker = () => {
+    const updateTaker = () => {
         // Validation
         if(!validate()) return;
 
-        DbService.addTaker(name, age,
+        DbService.updateTaker(taker.takerId, name, age,
             () => {
-                Toast.show(`${name} added`);
-                resetForm();
-                console.log('added new taker');
+                Toast.show(`${name} updated`);
+                console.log('updated taker');
             },
             error => {
-                console.log('error adding taker');
+                Toast.show(`error updating ${name}`);
+                console.log('error updating taker');
             });
     }
 
@@ -77,8 +85,8 @@ export default function AddTakerScreen() {
             />
             <Button 
                 style={styles.btn}
-                title="Add"
-                onPress={addTaker}
+                title="Save"
+                onPress={updateTaker}
             />
             {!!error && <Text style={styles.errorMsg}>{error}</Text>}
         </View>

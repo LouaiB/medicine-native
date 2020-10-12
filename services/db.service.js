@@ -51,7 +51,15 @@ export const DbService = {
         if(!name || !age) return false;
 
         db.transaction(tx => {
-            tx.executeSql(`insert into ${TAKER_TABLE} (name, age) values (?, ?)`, [name, age], success, failure);
+            tx.executeSql(`insert into ${TAKER_TABLE} (${TAKER_NAME_COL}, ${TAKER_AGE_COL}) values (?, ?)`, [name, age], success, failure);
+        });
+    },
+
+    updateTaker: (takerId, name, age, success, failure) => {
+        if(!takerId || !name || !age) return false;
+
+        db.transaction(tx => {
+            tx.executeSql(`update ${TAKER_TABLE} set ${TAKER_NAME_COL}=?, ${TAKER_AGE_COL}=? where ${TAKER_ID_COL}=?`, [name, age, takerId], success, failure);
         });
     },
 
@@ -66,4 +74,19 @@ export const DbService = {
             )
         })
     },
+
+    getTakerIntakes: (takerId, success, failure) => {
+        if(!takerId) return false;
+
+        db.transaction(tx => {
+            tx.executeSql(`select * from ${INTAKE_TABLE} inner join ${MEDICINE_TABLE} on ${INTAKE_MEDICINE_ID_COL}=${MEDICINE_ID_COL} where ${INTAKE_TAKER_ID_COL}=?`,
+                [takerId],
+                (_, { rows: { _array } }) => {
+                    console.info(`taker intakes fetched`);
+                    success(_array);
+                },
+                err => { failure(); }
+            )
+        })
+    }
 }

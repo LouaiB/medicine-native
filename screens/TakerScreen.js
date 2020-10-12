@@ -1,17 +1,38 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { Text, View, StyleSheet, Image, Button } from 'react-native';
 import { ThemeContext } from '../contexts/theme.context';
+import { DbService } from '../services/db.service';
 
-export default function TakerScreen({ route }) {
+export default function TakerScreen({ route, navigation }) {
 
     const { state } = useContext(ThemeContext);
     const styles = getStyles(state);
 
-    const [taker, setTaker] = useState(null);
+    const [taker, setTaker] = useState();
+    const [intakes, setIntakes] = useState([]);
 
     useEffect(() => {
         setTaker(route.params.taker);
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if(taker){
+            console.log(taker);
+            getIntakes(taker.takerId);
+        }
+    }, [taker]);
+
+    const getIntakes = (takerId) => {
+        DbService.getTakerIntakes(takerId,
+            results => {
+                setIntakes(results);
+                console.log('fetched taker intakes');
+            },
+            err => {
+                console.error(err);
+            }
+        )
+    }
 
     return (
         <View style={styles.container}>
@@ -20,10 +41,14 @@ export default function TakerScreen({ route }) {
                     <View style={styles.taker}>
                         <Image source={require('../assets/avatar.png')} style={styles.takerAvatar} />
                         <Text style={styles.takerName}>{taker.name}</Text>
+                        <Button
+                            title="Edit"
+                            onPress={() => navigation.push('Edit Taker', { taker })}
+                        />
                     </View>
                     <View style={styles.intakeSection}>
                         <Text style={styles.sectionTitle}>Intakes</Text>
-
+                        {intakes && intakes.length == 0 && <Text style={styles.noIntakes}>No intakes found</Text>}
                     </View>
                 </>
             )}
@@ -54,6 +79,7 @@ const getStyles = state => StyleSheet.create({
     },
 
     intakeSection: {
+        flex: 1,
         padding: 20,
         backgroundColor: state.theme.colors.sectionBg,
     },
@@ -62,5 +88,9 @@ const getStyles = state => StyleSheet.create({
         fontWeight: 'bold',
         letterSpacing: 2,
         fontSize: 20
+    },
+    noIntakes: {
+        color: state.theme.colors.faded,
+        letterSpacing: 2,
     }
 });
