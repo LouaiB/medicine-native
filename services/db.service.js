@@ -19,10 +19,11 @@ const INTAKE_TAKER_ID_COL = 'takerFk';
 const INTAKE_MEDICINE_ID_COL = 'medicineFk';
 const INTAKE_INTERVAL_COL = 'interval';
 
-const db = SQLite.openDatabase("medicine.db");
+let db;
 
 export const DbService = {
     init: () => {
+        db = SQLite.openDatabase("medicine.db");
         db.transaction(tx => {
             // Create tables if not exist
             tx.executeSql(
@@ -37,10 +38,8 @@ export const DbService = {
               () => {console.info(`${MEDICINE_TABLE} table created`)},
               err => console.error(err)
             );
-            const intakeSQL = `create table if not exists ${INTAKE_TABLE} (${INTAKE_ID_COL} integer primary key not null, ${INTAKE_TAKER_ID_COL} integer, ${INTAKE_MEDICINE_ID_COL} integer, ${INTAKE_INTERVAL_COL} text, foreign key(${INTAKE_TAKER_ID_COL}) references ${TAKER_TABLE}(${TAKER_ID_COL}), foreign key(${INTAKE_MEDICINE_ID_COL}) references ${MEDICINE_TABLE}(${MEDICINE_ID_COL}));`;
-            console.log(intakeSQL);
             tx.executeSql(
-              intakeSQL,
+                `create table if not exists ${INTAKE_TABLE} (${INTAKE_ID_COL} integer primary key not null, ${INTAKE_TAKER_ID_COL} integer, ${INTAKE_MEDICINE_ID_COL} integer, ${INTAKE_INTERVAL_COL} text, foreign key(${INTAKE_TAKER_ID_COL}) references ${TAKER_TABLE}(${TAKER_ID_COL}), foreign key(${INTAKE_MEDICINE_ID_COL}) references ${MEDICINE_TABLE}(${MEDICINE_ID_COL}));`,
               [],
               () => {console.info(`${INTAKE_TABLE} table created`)},
               err => console.error(err)

@@ -56,13 +56,19 @@ const TakersStack = () => {
  */
 const Tabs = () => {
 
-  const context = useContext(ThemeContext);
+  const { state } = useContext(ThemeContext);
+  const iconStyle = {
+    color: state.theme.colors.foregroundColor,
+    fontSize: 20,
+  }
 
   return (
     <Tab.Navigator
       tabBarOptions={{
-        // activeTintColor: context.state.theme.colors.successColor,
-        // inactiveTintColor: context.state.theme.colors.primaryColor,
+        activeTintColor: state.theme.colors.foregroundColor,
+        inactiveTintColor: state.theme.colors.foregroundColor,
+        activeBackgroundColor: state.theme.colors.activeTabBg,
+        inactiveBackgroundColor: state.theme.colors.inactiveTabBg,
       }}
     >
       <Tab.Screen
@@ -71,7 +77,7 @@ const Tabs = () => {
         options={
           {
             title: "Medicines",
-            tabBarIcon: props => <AntDesign name="medicinebox" />
+            tabBarIcon: props => <AntDesign name="medicinebox" style={iconStyle} />,
           }
         }
       />
@@ -81,7 +87,7 @@ const Tabs = () => {
         options={
           {
             title: "Takers",
-            tabBarIcon: props => <FontAwesome5 name="user-alt" />
+            tabBarIcon: props => <FontAwesome5 name="user-alt" style={iconStyle} />
           }
         } 
       />
