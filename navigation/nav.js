@@ -11,6 +11,7 @@ import AddIntakeScreen from '../screens/AddIntakeScreen';
 import TakersScreen from '../screens/TakersScreen';
 import TakerScreen from '../screens/TakerScreen';
 import AddTakerScreen from '../screens/AddTakerScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 
 // Navigators
 const Tab = createBottomTabNavigator();
@@ -28,23 +29,44 @@ const Stack = createStackNavigator();
  *        --> TakerScreen
  *        --> AddTakerScreen
  *  */ 
+
+
+
 const MedicinesStack = () => {
+
+  const { state } = useContext(ThemeContext);
+  const stackHeaderStyle = {
+    backgroundColor: state.theme.colors.stackHeaderBg,
+  }
+  const stackHeaderTitleStyle = {
+    color: state.theme.colors.foregroundColor,
+  }
+
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Medicines" component={MedicinesScreen} options={{title: "Medicines"}} />
-      <Stack.Screen name="Medicine" component={MedicineScreen} options={{title: "Medicine"}} />
-      <Stack.Screen name="Add Medicine" component={AddMedicineScreen} options={{title: "Add Medicine"}} />
-      <Stack.Screen name="Add Intake" component={AddIntakeScreen} options={{title: "Add Intake"}} />
+      <Stack.Screen name="Medicines" component={MedicinesScreen} options={{title: "Medicines", headerStyle: stackHeaderStyle, headerTitleStyle: stackHeaderTitleStyle}} />
+      <Stack.Screen name="Medicine" component={MedicineScreen} options={{title: "Medicine", headerStyle: stackHeaderStyle, headerTitleStyle: stackHeaderTitleStyle}} />
+      <Stack.Screen name="Add Medicine" component={AddMedicineScreen} options={{title: "Add Medicine", headerStyle: stackHeaderStyle, headerTitleStyle: stackHeaderTitleStyle}} />
+      <Stack.Screen name="Add Intake" component={AddIntakeScreen} options={{title: "Add Intake", headerStyle: stackHeaderStyle, headerTitleStyle: stackHeaderTitleStyle}} />
     </Stack.Navigator>
   )
 }
 
 const TakersStack = () => {
+
+  const { state } = useContext(ThemeContext);
+  const stackHeaderStyle = {
+    backgroundColor: state.theme.colors.stackHeaderBg,
+  }
+  const stackHeaderTitleStyle = {
+    color: state.theme.colors.foregroundColor,
+  }
+
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Takers" component={TakersScreen} options={{title: "Takers"}} />
-      <Stack.Screen name="Taker" component={TakerScreen} options={{title: "Taker"}} />
-      <Stack.Screen name="Add Taker" component={AddTakerScreen} options={{title: "Add Taker"}} />
+      <Stack.Screen name="Takers" component={TakersScreen} options={{title: "Takers", headerStyle: stackHeaderStyle, headerTitleStyle: stackHeaderTitleStyle}} />
+      <Stack.Screen name="Taker" component={TakerScreen} options={{title: "Taker", headerStyle: stackHeaderStyle, headerTitleStyle: stackHeaderTitleStyle}} />
+      <Stack.Screen name="Add Taker" component={AddTakerScreen} options={{title: "Add Taker", headerStyle: stackHeaderStyle, headerTitleStyle: stackHeaderTitleStyle}} />
     </Stack.Navigator>
   )
 }
@@ -53,6 +75,7 @@ const TakersStack = () => {
  * Layer 0: Main Tabs
  *      --> Medicines Tab   [contains Medicines Stack]
  *      --> Takers Tab      [contains Takers Stack]
+ *      --> Settings Tab
  */
 const Tabs = () => {
 
@@ -87,7 +110,17 @@ const Tabs = () => {
         options={
           {
             title: "Takers",
-            tabBarIcon: props => <FontAwesome5 name="user-alt" style={iconStyle} />
+            tabBarIcon: props => <FontAwesome5 name="user" style={iconStyle} />
+          }
+        } 
+      />
+      <Tab.Screen 
+        name="Settings"
+        component={SettingsScreen}
+        options={
+          {
+            title: "Settings",
+            tabBarIcon: props => <AntDesign name="setting" style={iconStyle} />
           }
         } 
       />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Text, View, StyleSheet, Button, TouchableOpacity, FlatList } from 'react-native';
+import { Text, View, StyleSheet, Button, TouchableOpacity, FlatList, Image } from 'react-native';
 import { DbService } from '../services/db.service';
 import { ThemeContext } from '../contexts/theme.context';
 
@@ -43,7 +43,13 @@ export default function TakersScreen({ navigation }) {
                     renderItem={item => (
                         <TouchableOpacity onPress={() => navigation.navigate("Taker", { taker: item.item })}>
                             <View style={styles.taker}>
-                                <Text style={styles.takerName}>{item.item.name}</Text>
+                                <View style={styles.takerLeft}>
+                                    <Image source={require('../assets/avatar.png')} style={styles.takerAvatar} />
+                                </View>
+                                <View style={styles.takerRight}>
+                                    <Text style={styles.takerName}>{item.item.name}</Text>
+                                    
+                                </View>
                             </View>
                         </TouchableOpacity>
                     )}
@@ -85,10 +91,24 @@ const getStyles = (state) => StyleSheet.create({
         color: "#fff",
     },
     taker: {
-        padding: 20
+        display: "flex",
+        flexDirection: "row",
+        backgroundColor: state.theme.colors.sectionBg,
+    },
+    takerLeft: {
+        padding: 15
+    },
+    takerRight: {
+        padding: 15
+    },
+    takerAvatar: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        
     },
     takerName: {
-        fontSize: 26,
+        fontSize: 22,
         color: state.theme.colors.foregroundColor,
     }
 });
