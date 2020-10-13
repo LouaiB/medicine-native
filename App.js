@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { ThemeContext, ThemeProvider } from './contexts/theme.context';
+import React from 'react';
+import { ThemeProvider } from './contexts/theme.context';
 import Init from './Init';
 import Nav from './navigation/nav';
 

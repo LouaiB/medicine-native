@@ -4,6 +4,7 @@ import { ThemeContext } from '../contexts/theme.context';
 import { DbService } from '../services/db.service';
 import { MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import Toast from 'react-native-simple-toast';
+import { NotifsService } from '../services/notifs.service';
 
 export default function TakerScreen({ route, navigation }) {
 
@@ -12,6 +13,12 @@ export default function TakerScreen({ route, navigation }) {
 
     const [taker, setTaker] = useState();
     const [intakes, setIntakes] = useState([]);
+
+    /////////////// TESTING NOTIFS ///////////////
+    useEffect(() => {
+        NotifsService.scheduleNotif('test notif', 'test notif body', 60);
+    }, []);
+    /////////////////////////////////////////////
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {

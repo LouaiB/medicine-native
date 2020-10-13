@@ -56,11 +56,11 @@ export const DbService = {
         });
     },
 
-    updateTaker: (takerId, name, age, success, failure) => {
+    updateTaker: (takerId, name, age, avatar, success, failure) => {
         if(!takerId || !name || !age) return false;
 
         db.transaction(tx => {
-            tx.executeSql(`update ${TAKER_TABLE} set ${TAKER_NAME_COL}=?, ${TAKER_AGE_COL}=? where ${TAKER_ID_COL}=?`, [name, age, takerId], success, failure);
+            tx.executeSql(`update ${TAKER_TABLE} set ${TAKER_NAME_COL}=?, ${TAKER_AGE_COL}=?, ${TAKER_AVATAR_COL}=? where ${TAKER_ID_COL}=?`, [name, age, avatar, takerId], success, failure);
         });
     },
 
