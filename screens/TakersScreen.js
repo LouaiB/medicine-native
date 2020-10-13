@@ -13,8 +13,15 @@ export default function TakersScreen({ navigation }) {
 
     useEffect(() => {
         getTakers();
-        console.log(state);
     }, []);
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            getTakers();
+        });
+    
+        return unsubscribe;
+    }, [navigation]);
 
     const getTakers = () => {
         setIsLoading(true);
@@ -41,7 +48,7 @@ export default function TakersScreen({ navigation }) {
                     refreshing={isLoading}
                     onRefresh={getTakers}
                     renderItem={item => (
-                        <TouchableOpacity onPress={() => navigation.navigate("Taker", { taker: item.item })}>
+                        <TouchableOpacity onPress={() => navigation.navigate("Taker", { takerId: item.item.takerId })}>
                             <View style={styles.taker}>
                                 <View style={styles.takerLeft}>
                                     <Image source={require('../assets/avatar.png')} style={styles.takerAvatar} />

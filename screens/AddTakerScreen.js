@@ -4,7 +4,7 @@ import { DbService } from '../services/db.service';
 import Toast from 'react-native-simple-toast';
 import { ThemeContext } from '../contexts/theme.context';
 
-export default function AddTakerScreen() {
+export default function AddTakerScreen({ navigation }) {
 
     const { state } = useContext(ThemeContext);
     const styles = getStyles(state);
@@ -44,6 +44,10 @@ export default function AddTakerScreen() {
         setAge('');
     }
 
+    const filterAge = (value) => {
+        setAge(value.replace(/[^0-9]/g, ''));
+    }
+
     const addTaker = () => {
         // Validation
         if(!validate()) return;
@@ -53,6 +57,7 @@ export default function AddTakerScreen() {
                 Toast.show(`${name} added`);
                 resetForm();
                 console.log('added new taker');
+                navigation.goBack();
             },
             error => {
                 console.log('error adding taker');
@@ -70,10 +75,11 @@ export default function AddTakerScreen() {
             />
             <TextInput 
                 style={styles.input}
+                keyboardType="numeric"
                 value={age}
                 placeholder="Taker Age"
                 placeholderTextColor={state.theme.colors.faded}
-                onChangeText={value => setAge(value)} 
+                onChangeText={filterAge} 
             />
             <Button 
                 style={styles.btn}

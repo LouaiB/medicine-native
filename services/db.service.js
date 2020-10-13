@@ -63,12 +63,34 @@ export const DbService = {
         });
     },
 
+    deleteTaker: (takerId, success, failure) => {
+        if(!takerId) return false;
+
+        db.transaction(tx => {
+            tx.executeSql(`delete from ${TAKER_TABLE} where ${TAKER_ID_COL}=?`, [takerId], success, failure);
+        });
+    },
+
     getTakers: (success, failure) => {
         db.transaction(tx => {
             tx.executeSql(`select * from ${TAKER_TABLE}`, [],
                 (_, { rows: { _array } }) => {
                     console.info(`takers fetched`);
                     success(_array);
+                },
+                err => { failure(); }
+            )
+        })
+    },
+
+    getTaker: (takerId, success, failure) => {
+        if(!takerId) return false;
+
+        db.transaction(tx => {
+            tx.executeSql(`select * from ${TAKER_TABLE} where ${TAKER_ID_COL}=?`, [takerId],
+                (_, { rows: { _array } }) => {
+                    console.info(`taker fetched`);
+                    success(_array[0]);
                 },
                 err => { failure(); }
             )

@@ -4,22 +4,21 @@ import { DbService } from '../services/db.service';
 import Toast from 'react-native-simple-toast';
 import { ThemeContext } from '../contexts/theme.context';
 
-export default function EditTakerScreen({ route }) {
+export default function EditTakerScreen({ route, navigation }) {
 
     const { state } = useContext(ThemeContext);
     const styles = getStyles(state);
 
-    const [taker, setTaker] = useState(route.params.taker);
     const [name, setName] = useState('');
-    const [age, setAge] = useState();
+    const [age, setAge] = useState(0);
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if(taker) {
-            setName(taker.name);
-            setAge(taker.age);
+        if(route.params.taker) {
+            setName(route.params.taker.name);
+            setAge(route.params.taker.age);
         }
-    }, [taker]);
+    }, []);
 
     const validate = () => {
         setError('');
@@ -52,14 +51,19 @@ export default function EditTakerScreen({ route }) {
         setAge('');
     }
 
+    const filterAge = (value) => {
+        setAge(value.replace(/[^0-9]/g, ''));
+    }
+
     const updateTaker = () => {
         // Validation
         if(!validate()) return;
 
-        DbService.updateTaker(taker.takerId, name, age,
+        DbService.updateTaker(route.params.taker.takerId, name, age,
             () => {
                 Toast.show(`${name} updated`);
                 console.log('updated taker');
+                navigation.goBack();
             },
             error => {
                 Toast.show(`error updating ${name}`);
@@ -78,10 +82,11 @@ export default function EditTakerScreen({ route }) {
             />
             <TextInput 
                 style={styles.input}
-                value={age}
+                keyboardType="numeric"
+                value={age.toString()}
                 placeholder="Taker Age"
                 placeholderTextColor={state.theme.colors.faded}
-                onChangeText={value => setAge(value)} 
+                onChangeText={filterAge}
             />
             <Button 
                 style={styles.btn}
