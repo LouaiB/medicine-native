@@ -9,6 +9,7 @@ const INTAKE_TABLE = 'intake';
 const TAKER_ID_COL = 'takerId';
 const TAKER_NAME_COL = 'name';
 const TAKER_AGE_COL = 'age';
+const TAKER_AVATAR_COL = 'avatar';
 
 const MEDICINE_ID_COL = 'medicineId';
 const MEDICINE_NAME_COL = 'name';
@@ -27,7 +28,7 @@ export const DbService = {
         db.transaction(tx => {
             // Create tables if not exist
             tx.executeSql(
-              `create table if not exists ${TAKER_TABLE} (${TAKER_ID_COL} integer primary key not null, ${TAKER_NAME_COL} text, ${TAKER_AGE_COL} integer);`,
+              `create table if not exists ${TAKER_TABLE} (${TAKER_ID_COL} integer primary key not null, ${TAKER_NAME_COL} text, ${TAKER_AGE_COL} integer, ${TAKER_AVATAR_COL} text);`,
               [],
               () => {console.info(`${TAKER_TABLE} table created`)},
               err => console.error(err)
@@ -47,11 +48,11 @@ export const DbService = {
         });
     },
 
-    addTaker: (name, age, success, failure) => {
+    addTaker: (name, age, avatar, success, failure) => {
         if(!name || !age) return false;
 
         db.transaction(tx => {
-            tx.executeSql(`insert into ${TAKER_TABLE} (${TAKER_NAME_COL}, ${TAKER_AGE_COL}) values (?, ?)`, [name, age], success, failure);
+            tx.executeSql(`insert into ${TAKER_TABLE} (${TAKER_NAME_COL}, ${TAKER_AGE_COL}, ${TAKER_AVATAR_COL}) values (?, ?, ?)`, [name, age, avatar], success, failure);
         });
     },
 

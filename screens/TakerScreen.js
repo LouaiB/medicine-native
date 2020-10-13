@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Text, View, StyleSheet, Image, Button, TouchableOpacity, Alert } from 'react-native';
 import { ThemeContext } from '../contexts/theme.context';
 import { DbService } from '../services/db.service';
-import { MaterialIcons, Entypo } from '@expo/vector-icons';
+import { MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import Toast from 'react-native-simple-toast';
 
 export default function TakerScreen({ route, navigation }) {
@@ -91,7 +91,7 @@ export default function TakerScreen({ route, navigation }) {
             {taker && (
                 <>
                     <View style={styles.taker}>
-                        <Image source={require('../assets/avatar.png')} style={styles.takerAvatar} />
+                        <Image source={taker.avatar ? { uri: taker.avatar } : require('../assets/avatar.png')} style={styles.takerAvatar} />
                         <Text style={styles.takerName}>{taker.name}</Text>
                         <View style={styles.controls}>
                             <TouchableOpacity 
@@ -108,6 +108,23 @@ export default function TakerScreen({ route, navigation }) {
                                 <MaterialIcons name="delete-forever" style={styles.btnIcon} />
                                 <Text style={styles.btnLabel}>Delete</Text>
                             </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={styles.infoSection}>
+                        <Text style={styles.sectionTitle}>Info</Text>
+                        <View style={styles.info}>
+                            <View style={styles.infoKey}>
+                                <AntDesign name="idcard" style={styles.infoIcon} />
+                                <Text style={styles.infoLabel}>Name</Text>
+                            </View>
+                            <Text style={styles.infoValue}>{taker.name}</Text>
+                        </View>
+                        <View style={styles.info}>
+                            <View style={styles.infoKey}>
+                                <AntDesign name="calendar" style={styles.infoIcon} />
+                                <Text style={styles.infoLabel}>Age</Text>
+                            </View>
+                            <Text style={styles.infoValue}>{taker.age}</Text>
                         </View>
                     </View>
                     <View style={styles.intakeSection}>
@@ -129,7 +146,7 @@ const getStyles = state => StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: 20,
+        padding: 10,
     },
     takerAvatar: {
         height: 100,
@@ -140,6 +157,40 @@ const getStyles = state => StyleSheet.create({
         color: state.theme.colors.foregroundColor,
         fontSize: 24,
         lineHeight: 50,
+    },
+
+    infoSection: {
+        margin: 10,
+        marginTop: 0,
+        padding: 10,
+        borderRadius: 4,
+        backgroundColor: state.theme.colors.sectionBg,
+    },
+    info: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingTop: 5,
+        paddingBottom: 5,
+    },
+    infoKey: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    infoIcon: {
+        color: state.theme.colors.foregroundColor,
+        fontSize: 20,
+    },
+    infoLabel: {
+        color: state.theme.colors.foregroundColor,
+        fontSize: 16,
+        marginLeft: 10,
+    },
+    infoValue: {
+        color: state.theme.colors.foregroundColor,
+        fontSize: 16,
     },
 
     intakeSection: {

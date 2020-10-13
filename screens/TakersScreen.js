@@ -51,7 +51,7 @@ export default function TakersScreen({ navigation }) {
                         <TouchableOpacity onPress={() => navigation.navigate("Taker", { takerId: item.item.takerId })}>
                             <View style={styles.taker}>
                                 <View style={styles.takerLeft}>
-                                    <Image source={require('../assets/avatar.png')} style={styles.takerAvatar} />
+                                    <Image source={item.item.avatar ? { uri: item.item.avatar } : require('../assets/avatar.png')} style={styles.takerAvatar} />
                                 </View>
                                 <View style={styles.takerRight}>
                                     <Text style={styles.takerName}>{item.item.name}</Text>
@@ -96,17 +96,21 @@ const getStyles = (state) => StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 30,                                       
-        position: 'absolute',                                          
+        position: 'absolute',                                       
         bottom: 20,                                       
         right: 20,
     },
     floatingBtnText: {
-        fontSize: 20,
+        fontSize: 30,
         color: "#fff",
+        margin: 0,
+        padding: 0,
+        lineHeight: 35,
     },
     taker: {
         display: "flex",
         flexDirection: "row",
+        alignItems: "center",
         backgroundColor: state.theme.colors.sectionBg,
     },
     takerLeft: {
